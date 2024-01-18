@@ -1,23 +1,7 @@
-// buildscript  { 
-//     dependencies {
-//         classpath "test.gradle.dep.plugins:gradle-dep-mgr-build-logic:1.0"
-//     }
-
-//      repositories {
-//         mavenLocal()
-//         maven {
-//             url "https://maven.aliyun.com/repository/public"
-//             //allowInsecureProtocol = true
-//         }
-//     } 
-// }
-
 plugins { 
     id 'java'
-    id 'test.gradle.dep.mgr.java-application-conventions' version '1.0'
+    id 'test.gradle.dep.mgr.java-library-conventions' version '1.0'
 }
- 
-// apply plugin:  'test.gradle.dep.mgr.java-application-conventions'
 
  
 group = 'org.app.versions'
