@@ -1,0 +1,81 @@
+plugins {
+   id 'application'
+   id 'eclipse'
+   id 'io.franzbecker.gradle-lombok' version '5.0.0'
+   alias(libs.plugins.versions)
+}
+repositories {
+    mavenLocal()
+    maven {
+        url "https://maven.aliyun.com/repository/public"
+        //allowInsecureProtocol = true
+    }
+    mavenCentral()
+}
+
+group = 'org.app'
+version = '1.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+plugins.withType(JavaPlugin) {
+    project.tasks.withType(JavaCompile) { task ->
+        task.sourceCompatibility = project.sourceCompatibility
+        task.targetCompatibility = project.targetCompatibility
+    }
+
+//    project.tasks.withType(GroovyCompile) { task ->
+//        task.sourceCompatibility = project.sourceCompatibility
+//        task.targetCompatibility = project.targetCompatibility
+//    }
+}
+
+subprojects {
+}
+dependencies { 
+    
+    implementation 'ch.qos.logback:logback-classic:1.2.7'
+    // Junit5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.mockito:mockito-core:4.8.0'	
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+	
+	implementation(libs.commons.lang3)
+	implementation(libs.mylib.full.format )
+	// implementation(libs.bundles.groovy)
+
+}
+ 
+application {
+    mainClass = 'org.app.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+	testLogging {
+        events "skipped", "failed", "standardError"
+        exceptionFormat "short"
+    }	
+}
+
+task aa() {
+  println(libs.versions.groovy.get())
+}
+
+
+def versionCatalog = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named("libs")
+println "Library aliases: ${versionCatalog.libraryAliases}"
+dependencies {
+    versionCatalog.findLibrary("groovy-json").ifPresent {
+        implementation(it)
+    }
+}
+
+task printVers {
+
+}
+ 
+
+// About distribution usage.

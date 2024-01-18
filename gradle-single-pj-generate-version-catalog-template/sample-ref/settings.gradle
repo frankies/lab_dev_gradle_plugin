@@ -1,0 +1,59 @@
+ pluginManagement {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.aliyun.com/repository/public"
+            //allowInsecureProtocol = true
+        } 
+        gradlePluginPortal()
+    }
+
+   resolutionStrategy {
+        eachPlugin { 
+            println("""==>${requested.id.id}:${requested.version},
+                ${requested.id.name},${requested.id.namespace}
+                """)
+            if (requested.id.namespace == 'test.gradle.dep.mgr') {
+                useModule("test.gradle.dep.plugins:gradle-dep-mgr-build-logic:${requested.version}")
+            }
+        }
+    }
+    
+} 
+
+
+plugins {
+    // Apply the foojay-resolver plugin to allow automatic download of JDKs
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+}
+
+
+dependencyResolutionManagement {
+   repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.aliyun.com/repository/public"
+            //allowInsecureProtocol = true
+        }
+    } 
+
+     versionCatalogs {
+        libs {
+            from("org.app.versions:version-catalog-publish:1.0")  
+            // plugin('my-app', 'test.gradle.dep.mgr.java-application-conventions').version('1.0')
+        }
+
+        // Overwriting catalog versions
+        // Any dependency which was using the groovy version as reference will be automatically updated to use 3.0.6.
+        amendedLibs {
+            from("org.app.versions:version-catalog-publish:1.0")
+            // overwrite the "groovy" version declared in the imported catalog
+            version("groovy", "3.0.6")
+        }
+    }
+}
+
+
+
+
+rootProject.name="version-catalog-ref"

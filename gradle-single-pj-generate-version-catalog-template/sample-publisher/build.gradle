@@ -1,0 +1,32 @@
+plugins {
+    id 'version-catalog'
+    id 'maven-publish'
+}
+ 
+
+group = 'org.app.versions'
+version = '1.0'
+
+catalog {
+    // declare the aliases, bundles and versions in this block
+    versionCatalog {
+          version('groovy', '3.0.5')
+          version('checkstyle', '8.37')
+          library('groovy-core', 'org.codehaus.groovy', 'groovy').versionRef('groovy')
+          library('groovy-json', 'org.codehaus.groovy', 'groovy-json').versionRef('groovy')
+          library('groovy-nio', 'org.codehaus.groovy', 'groovy-nio').versionRef('groovy')
+          library('commons-lang3', 'org.apache.commons', 'commons-lang3').version {
+              strictly '[3.8, 4.0['
+              prefer '3.9'
+          }
+          bundle('groovy-pack3', ['groovy-core', 'groovy-json', 'groovy-nio'])
+    }
+}
+
+publishing {
+    publications {
+        mavenVers(MavenPublication) {
+            from components.versionCatalog
+        }
+    }
+}

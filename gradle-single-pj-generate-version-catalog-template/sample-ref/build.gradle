@@ -1,0 +1,40 @@
+// buildscript  { 
+//     dependencies {
+//         classpath "test.gradle.dep.plugins:gradle-dep-mgr-build-logic:1.0"
+//     }
+
+//      repositories {
+//         mavenLocal()
+//         maven {
+//             url "https://maven.aliyun.com/repository/public"
+//             //allowInsecureProtocol = true
+//         }
+//     } 
+// }
+
+plugins { 
+    id 'java'
+    id 'test.gradle.dep.mgr.java-application-conventions' version '1.0'
+}
+ 
+// apply plugin:  'test.gradle.dep.mgr.java-application-conventions'
+
+ 
+group = 'org.app.versions'
+version = '1.0'
+
+dependencies {
+    // implementation(libs.bundles.groovy.pack3)
+    implementation(amendedLibs.bundles.groovy.pack3)
+
+
+   implementation 'org.apache.httpcomponents:httpclient'
+    constraints {
+        implementation('org.apache.httpcomponents:httpclient:4.5.3') {
+            because 'previous versions have a bug impacting this application'
+        }
+        implementation('commons-codec:commons-codec:1.11') {
+            because 'version 1.9 pulled from httpclient has bugs affecting this application'
+        }
+    }
+}

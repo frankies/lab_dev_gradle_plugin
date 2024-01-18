@@ -1,0 +1,30 @@
+ pluginManagement {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.aliyun.com/repository/public"
+            //allowInsecureProtocol = true
+        }
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    // Apply the foojay-resolver plugin to allow automatic download of JDKs
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+}
+
+dependencyResolutionManagement {
+   repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.aliyun.com/repository/public"
+            //allowInsecureProtocol = true
+        }
+    } 
+}
+
+
+
+
+rootProject.name="version-catalog-publish"
